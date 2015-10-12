@@ -81,6 +81,11 @@ public class Main {
         System.out.println("Main.myFilter(Arrays.asList(\"1\", \"2\", \"3\", \"1\").stream(),s -> s.equals(\"1\")) = " +
                 Main.myFilter(Arrays.asList("1", "2", "3", "1").stream(),s -> s.equals("1")));
 
+        System.out.println("result = " + Arrays.asList(3, 3, 3).stream().reduce(0,(i, i2) -> i + i2 + 1,(u, u2) -> u + u2 +1));
+        System.out.println("result parallel = " + Arrays.asList(3, 3, 3).stream().parallel().reduce(0, (i, i2) -> i + i2 + 1, (u, u2) -> u + u2 + 1));
+
+        System.out.println("result = " + Arrays.asList("1", "2", "3", "1").stream().reduce("_", (s, s2) -> s + s2, (u, u2) -> u + u2 + " "));
+        System.out.println("result parallel = " + Arrays.asList("1", "2", "3", "1").stream().parallel().reduce("_", (s, s2) -> s + s2, (u, u2) -> u + u2 + " "));
 
     }
 
