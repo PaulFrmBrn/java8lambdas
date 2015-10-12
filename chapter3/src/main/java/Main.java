@@ -1,11 +1,12 @@
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import com.paulfrmbrn.lambda8.example.Album;
 import com.paulfrmbrn.lambda8.example.Artist;
 import com.paulfrmbrn.lambda8.example.SampleData;
+
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author paul
@@ -46,7 +47,7 @@ public class Main {
         System.out.println("countLowerCase(\"somEsTRinG\") = " + countLowerCase("somEsTRinG"));
 
         // 7
-        Optional<String> maxLowerCaseCountResult = maxLowerCaseCount(Arrays.asList("asd","Qwe","ERty"));
+        Optional<String> maxLowerCaseCountResult = maxLowerCaseCount(Arrays.asList("asd", "Qwe", "ERty"));
         //Optional<String> maxLowerCaseCountResult = maxLowerCaseCount(Collections.emptyList());
         if (maxLowerCaseCountResult.isPresent()) {
             System.out.println("maxLowerCaseCount(Arrays.asList(\"asd\",\"Qwe\",\"ERty\")) = " + maxLowerCaseCountResult.get());
@@ -54,23 +55,37 @@ public class Main {
             System.out.println("maxLowerCaseCount param list is empty");
         }
 
+        // additional 1
         System.out.println("Arrays.asList(\"asd\",\"def\").stream().map(s -> s.length()).collect(Collectors.toList()); = " +
-                Arrays.asList("asd","def").stream().map(String::length).collect(Collectors.toList()));
+                Arrays.asList("asd", "def").stream().map(String::length).collect(Collectors.toList()));
 
         System.out.println("Main.<String,Integer>myMap(Arrays.asList(\"asd\",\"def\").stream(),s -> s.length()) = " +
                 Main.myMap(Arrays.asList("asd", "def").stream(), String::length));
 
         System.out.println("Arrays.asList(\"asd\",\"def\").stream().map(s -> s + 2).collect(Collectors.toList()) = " +
-                Arrays.asList("asd","def").stream().map(s -> s + 2).collect(Collectors.toList()));
+                Arrays.asList("asd", "def").stream().map(s -> s + 2).collect(Collectors.toList()));
 
         System.out.println("Main.<String,String>myMap(Arrays.asList(\"asd\", \"def\").stream(), s -> s + 2) = " +
-                Main.<String,String>myMap(Arrays.asList("asd", "def").stream(), s -> s + 2));
+                Main.<String, String>myMap(Arrays.asList("asd", "def").stream(), s -> s + 2));
+
+        // additional 2
+        System.out.println("Arrays.asList(\"asd\",\"def\").stream().filter(s -> s.startsWith(\"a\")).collect(Collectors.toList()) = " +
+                Arrays.asList("asd", "def").stream().filter(s -> s.startsWith("a")).collect(Collectors.toList()));
+
+        System.out.println("Main.myFilter(Arrays.asList(\"asd\", \"def\").stream(),s -> s.startsWith(\"a\")) = " +
+                Main.myFilter(Arrays.asList("asd", "def").stream(),s -> s.startsWith("a")));
+
+        System.out.println("Arrays.asList(\"1\", \"1\", \"2\", \"3\").stream().filter(s -> s.startsWith(\"a\")).collect(Collectors.toList()) = " +
+                Arrays.asList("1", "2", "3", "1").stream().filter(s -> s.equals("1")).collect(Collectors.toList()));
+
+        System.out.println("Main.myFilter(Arrays.asList(\"1\", \"2\", \"3\", \"1\").stream(),s -> s.equals(\"1\")) = " +
+                Main.myFilter(Arrays.asList("1", "2", "3", "1").stream(),s -> s.equals("1")));
 
 
     }
 
-    public static int addUp (Stream<Integer> numbers) {
-        return numbers.reduce(0,(accumulator,element) -> accumulator + element);
+    public static int addUp(Stream<Integer> numbers) {
+        return numbers.reduce(0, (accumulator, element) -> accumulator + element);
     }
 
     public static List<String> getArtistsInfo(List<Artist> artists) {
@@ -113,7 +128,7 @@ public class Main {
         return stringList.stream().max(Comparator.comparing(Main::countLowerCase));
     }
 
-    public static <T,R> List<R> myMap(Stream<T> param, Function<? super T, ? extends R> mapper) {
+    public static <T, R> List<R> myMap(Stream<T> param, Function<? super T, ? extends R> mapper) {
         return param.reduce(
 
                 // identity
@@ -122,16 +137,44 @@ public class Main {
                 // accumulator
                 (List<R> accumulator, T element) -> {
                     List<R> list = new ArrayList<>(accumulator);
+
                     list.add(mapper.apply(element));
                     return list;
 
-                // combiner
-                },(List<R> leftList, List<R> rightList) -> {
+                    // combiner
+                }, (List<R> leftList, List<R> rightList) -> {
                     List<R> temp = new ArrayList<>(leftList);
                     temp.addAll(rightList);
                     return temp;
                 }
-                );
+        );
+
+    }
+
+    public static <T> List<T> myFilter(Stream<T> param, Predicate<? super T> predicate) {
+        return param.reduce(
+
+                // identity
+                new ArrayList<>(),
+
+                // accumulator
+                (List<T> accumulator, T element) -> {
+
+                    if (predicate.test(element)) {
+                        List<T> list = new ArrayList<>(accumulator);
+                        list.add(element);
+                        return list;
+                    } else {
+                        return accumulator;
+                    }
+
+                    // combiner
+                }, (List<T> leftList, List<T> rightList) -> {
+                    List<T> temp = new ArrayList<>(leftList);
+                    temp.addAll(rightList);
+                    return temp;
+                }
+        );
 
     }
 
