@@ -87,6 +87,23 @@ public class Main {
         System.out.println("result = " + Arrays.asList("1", "2", "3", "1").stream().reduce("_", (s, s2) -> s + s2, (u, u2) -> u + u2 + " "));
         System.out.println("result parallel = " + Arrays.asList("1", "2", "3", "1").stream().parallel().reduce("_", (s, s2) -> s + s2, (u, u2) -> u + u2 + " "));
 
+
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            list.add(String.valueOf(i));
+        }
+
+        System.out.println("result = " + list.stream()./*parallel().*/
+
+                reduce(
+                        // idenity
+                        "_",
+                        // accumulator
+                        (s, s2) -> s + s2 + " ",
+                        // combiner
+                        (s1, s21) -> s1 + s21 + "^")
+        );
+
     }
 
     public static int addUp(Stream<Integer> numbers) {
