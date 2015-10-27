@@ -38,7 +38,7 @@ public class Main {
         // 3.
         Integer fastReduce = arrayList.stream().parallel().map(x -> x * x).reduce(0, (acc, element) -> acc + element);
         System.out.println("fastReduce = " + fastReduce);
-        // 3. fixed
+        // 3. fixed (mapToInt works with int - not Integer, and sum() is optimized for int)
         Integer fastestReduce = arrayList.stream().parallel().mapToInt(x -> x * x).sum();
         System.out.println("fastestReduce = " + fastestReduce);
 
