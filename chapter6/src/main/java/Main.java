@@ -42,6 +42,20 @@ public class Main {
         Integer fastestReduce = arrayList.stream().parallel().mapToInt(x -> x * x).sum();
         System.out.println("fastestReduce = " + fastestReduce);
 
+        // example 6.3
+        StreamDiceRolls streamDiceRolls = new StreamDiceRolls();
+        System.out.println("streamDiceRolls start");
+        System.out.println(streamDiceRolls);
+        streamDiceRolls.simulate();
+        System.out.println("streamDiceRolls end");
+
+        // example 6.4
+        ManualDiceRolls manualDiceRolls = new ManualDiceRolls();
+        System.out.println("manualDiceRolls start");
+        System.out.println(manualDiceRolls);
+        manualDiceRolls.simulate();
+        System.out.println("manualDiceRolls end");
+
 
     }
 
