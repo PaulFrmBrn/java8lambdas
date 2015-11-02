@@ -11,14 +11,14 @@ public class Main {
 
         Editor editor = new EditorImpl();
 
-        // old way
+        // oldway way
         Macro macro = new Macro();
         macro.record(new Open(editor));
         macro.record(new Save(editor));
         macro.record(new Close(editor));
         macro.run();
 
-        // new way: lambdas
+        // newway way: lambdas
         // classes Open, Save, Close - are redundant
         Macro macroNew = new Macro();
         macroNew.record(editor::open);

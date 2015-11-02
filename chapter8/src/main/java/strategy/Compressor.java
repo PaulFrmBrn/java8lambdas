@@ -1,4 +1,4 @@
-package Strategy;
+package strategy;
 
 import org.apache.commons.io.IOUtils;
 
