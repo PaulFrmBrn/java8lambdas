@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 /**
  * @author paul
  */
-// reading from file and filtering string are tied
+// reading from file and filtering string processes are tied
 public class HeadingFinderBad {
 
     public List<String> findHeadings(Reader input) throws HeadingLookupException {
