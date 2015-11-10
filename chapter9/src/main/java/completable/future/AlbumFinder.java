@@ -2,6 +2,8 @@ package completable.future;
 
 import com.paulfrmbrn.lambda8.example.Album;
 import com.paulfrmbrn.lambda8.example.Artist;
+import future.*;
+import future.Credentials;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -22,10 +24,18 @@ public class AlbumFinder {
 
     @Nonnull
     public Album albumLookup(String albumName) {
-        CompletableFuture<List<Artist>> artistLookup =
-                slowExternalSystem.artistDBLogin(userName)
-                .thenCompose(credentials -> slowExternalSystem.lookupArtists("Californication",credentials));
+        CompletableFuture<Credentials> credentialsFuture = slowExternalSystem.artistDBLogin(userName);
+        System.out.println("nothing is happening here...");
+        CompletableFuture<List<Artist>> artistLookup = credentialsFuture
+                .thenCompose(credentials -> slowExternalSystem.lookupArtists("Californication", credentials));
 
+        System.out.println("sleep...");
+        try {
+            Thread.sleep(30000L);
+        } catch (InterruptedException e) {
+            System.out.println("Ooooops...");
+        }
+        System.out.println("...awake");
         return slowExternalSystem.trackDBLogin(userName)
                 .thenCompose(credentials -> slowExternalSystem.lookupTracks("Californication",credentials))
                 .thenCombine(artistLookup, (tracks,artists) -> new Album(albumName,tracks,artists)).join();

@@ -21,5 +21,6 @@
     <orderEntry type="library" name="Maven: io.vertx:vertx-platform:2.1.6" level="project" />
     <orderEntry type="library" name="Maven: com.paulfrmbrn:java8lambdasexamples:1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:2.0.1" level="project" />
+    <orderEntry type="library" name="Maven: com.netflix.rxjava:rxjava-core:0.20.7" level="project" />
   </component>
 </module>
